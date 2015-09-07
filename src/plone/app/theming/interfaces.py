@@ -141,6 +141,15 @@ class IThemeSettings(Interface):
         default=[u"127.0.0.1"],
     )
 
+    backend_theme = schema.TextLine(
+        title=_("backend_theme", u"Theme for backend"),
+        description=_(
+            'backend_theme_description',
+            u"Please select the theme for 'backend theme' (logged)."
+        ),
+        required=False,
+    )
+
     parameterExpressions = schema.Dict(
         title=_('parameter_expressions', u"Parameter expressions"),
         description=_(

@@ -14,6 +14,9 @@ from plone.app.theming.interfaces import IThemingPolicy
 from plone.app.theming.interfaces import IThemeSettings
 from plone.app.theming import utils
 
+from plone.app.theming.utils import applyTheme
+from plone.api import user
+
 log = getLogger(__name__)
 _local_cache = threading.local()
 
@@ -158,6 +161,18 @@ class ThemingPolicy(object):
     def get_theme(self):
         """Managing the theme cache is a plone.app.theming policy
         decision. Moved out out Products.CMFPlone."""
+
+        settings = self.getSettings()
+        backend_theme = settings.backend_theme or ""
+        if backend_theme:
+            if user.is_anonymous():
+                theme = settings.currentTheme
+                themeData = utils.getTheme(theme)
+                applyTheme(themeData, save_config=False)
+            else:
+                themeData = utils.getTheme(backend_theme)
+                applyTheme(themeData, save_config=False)
+
         cache = self.getCache()
         themeObj = cache.themeObj
         if not themeObj:

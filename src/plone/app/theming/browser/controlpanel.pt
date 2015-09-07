@@ -492,6 +492,29 @@
                     </div>
 
                     <div
+                        tal:define="error errors/backend_theme | nothing;
+                                    backend_theme python:request.get('backend_theme', view.settings.backend_theme or '')"
+                        tal:attributes="class python:'field error' if error else 'field'">
+
+                        <label for="backend_theme" i18n:translate="label_backend_theme">Backend theme</label>
+                        <div class="formHelp" i18n:translate="help_backend_theme">
+                            Please select the them for 'backend theme' (logged).
+                        </div>
+
+                        <div class="errorMessage" tal:content="error" tal:condition="error" />
+
+                        <select name="backend_theme" id="backend_theme">
+                                <option tal:attributes="selected python:'selected' if not backend_theme else nothing"
+                                        value=""></option>
+                                <tal:index repeat="index python:view.availableThemes_names()">
+                                    <option tal:attributes="value index;
+                                        selected python:'selected' if backend_theme == index else nothing"
+                                            tal:content="index">Item</option>
+                                </tal:index>
+                            </select>
+                    </div>
+
+                    <div
                         tal:define="error errors/parameterExpressions | nothing;
                                     parameterExpressions python:view.settings.parameterExpressions or {};
                                     parameterExpressions python:['%s = %s' % (k,v) for k,v in parameterExpressions.items()];

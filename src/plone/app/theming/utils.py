@@ -414,7 +414,7 @@ def isThemeEnabled(request, settings=None):
     return theming_policy(request).isThemeEnabled(settings)
 
 
-def applyTheme(theme):
+def applyTheme(theme, save_config=True):
     """Apply an ITheme
     """
     # on write, force using default policy
@@ -435,7 +435,8 @@ def applyTheme(theme):
 
     if theme is None:
 
-        settings.currentTheme = None
+        if save_config:
+            settings.currentTheme = None
         settings.rules = None
         settings.absolutePrefix = None
         settings.parameterExpressions = {}
@@ -457,7 +458,8 @@ def applyTheme(theme):
         if isinstance(theme.__name__, str):
             theme.__name__ = theme.__name__.decode('utf-8')
 
-        settings.currentTheme = theme.__name__
+        if save_config:
+            settings.currentTheme = theme.__name__
         settings.rules = theme.rules
         settings.absolutePrefix = theme.absolutePrefix
         settings.parameterExpressions = theme.parameterExpressions

@@ -168,6 +168,7 @@ class ThemingControlpanel(BrowserView):
             doctype = str(form.get('doctype', ""))
 
             hostnameBlacklist = form.get('hostnameBlacklist', [])
+            backend_theme = form.get('backend_theme', "")
 
             parameterExpressions = {}
             parameterExpressionsList = form.get('parameterExpressions', [])
@@ -201,6 +202,7 @@ class ThemingControlpanel(BrowserView):
                 self.settings.absolutePrefix = prefix
                 self.settings.parameterExpressions = parameterExpressions
                 self.settings.hostnameBlacklist = hostnameBlacklist
+                self.settings.backend_theme = backend_theme
                 self.settings.doctype = doctype
 
                 # Theme base settings
@@ -475,3 +477,6 @@ class ThemingControlpanel(BrowserView):
 
     def authorize(self):
         return authorize(self.context, self.request)
+
+    def availableThemes_names(self):
+        return [t.__name__ for t in self.availableThemes]
